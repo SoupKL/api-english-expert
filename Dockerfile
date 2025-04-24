@@ -1,20 +1,22 @@
-FROM php:8.2
+FROM php:8.2-cli
 
-# Установка зависимостей
-RUN apt-get update && apt-get install -y libpq-dev zip unzip git curl \
-    && docker-php-ext-install pdo pdo_pgsql pgsql
+RUN apt-get update && apt-get install -y \
+    zip unzip curl libpng-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
+# Установка Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-COPY . .
+COPY . /var/www
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install --optimize-autoloader --no-dev
 
-RUN php artisan config:clear && php artisan route:clear
+# Генерация ключа — Laravel требует .env
+COPY .env.example .env
+RUN php artisan key:generate
 
-EXPOSE 10000
-
-# 👇 Laravel слушает на 0.0.0.0:10000
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# Laravel listen на 0.0.0.0:8080
+EXPOSE 8080
+CMD php artisan serve --host=0.0.0.0 --port=8080
