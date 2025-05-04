@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CourseStatusController;
+use App\Http\Controllers\UserLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserRegistratController;
@@ -20,3 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', [UserRegistratController::class, 'store']);
+Route::post('/login',[UserLoginController::class, 'login']);
+Route::post('/logout',[UserLoginController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users/{user}/course-status', [CourseStatusController::class, 'show']);
+    Route::patch('/course-status/{user}', [CourseStatusController::class, 'updateCourse']);
+});
+
