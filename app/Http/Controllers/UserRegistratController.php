@@ -36,15 +36,14 @@ class UserRegistratController extends Controller {
             'user_id' => $user->id,
         ]);
 
-        $loginRequest = new Request([
-            'identifier' => $user->login,
-            'password' => $request->password
-        ]);
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        $loginController = new UserLoginController();
-        $loginController->login($loginRequest);
-
-        return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ], 201);
 	}
 
 }

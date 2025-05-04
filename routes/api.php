@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseStatusController;
+use App\Http\Controllers\ParamanentData\CursePageDataController;
 use App\Http\Controllers\UserLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{user}/course-status', [CourseStatusController::class, 'show']);
     Route::patch('/course-status/{user}', [CourseStatusController::class, 'updateCourse']);
 });
+
+Route::get('/cures-info/{cursName}', [CursePageDataController::class, 'show']);
 
