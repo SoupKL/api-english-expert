@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('textGrout');
             $table->integer('price');
             $table->integer('price_month');
+            $table->text('firstImage')->nullable();
             $table->timestamps();
         });
     }

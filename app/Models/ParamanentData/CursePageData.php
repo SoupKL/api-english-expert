@@ -9,5 +9,5 @@ class CursePageData extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cursName', 'purposesInfo', 'textGrout', 'price', 'price_month'];
+    protected $fillable = ['cursName', 'purposesInfo', 'textGrout', 'price', 'price_month', 'firstImage'];
 }
