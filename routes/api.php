@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\CourseStatusController;
+use App\Http\Controllers\ParamanentData\CursePageDataController;
+use App\Http\Controllers\UserLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserRegistratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +21,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/test', function () {
-	return 'lox';
+
+Route::post('/register', [UserRegistratController::class, 'store']);
+Route::post('/login',[UserLoginController::class, 'login']);
+Route::post('/logout',[UserLoginController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users/{user}/course-status', [CourseStatusController::class, 'show']);
+    Route::patch('/course-status/{user}', [CourseStatusController::class, 'updateCourse']);
 });
+
+Route::get('/cures-info/{cursName}', [CursePageDataController::class, 'show']);
+
