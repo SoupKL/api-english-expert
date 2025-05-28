@@ -25,40 +25,17 @@ services:
         networks:
             - laravel
 
-    db:
-        image: mysql:8.0
-        container_name: mysql_db
-        restart: always
-        environment:
-            MYSQL_DATABASE: laravel
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_USER: laravel
-            MYSQL_PASSWORD: secret
-        ports:
-            - "3306:3306"
-        volumes:
-            - dbdata:/var/lib/mysql
-        networks:
-            - laravel
-
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
         restart: always
         ports:
             - "8081:80"
         environment:
-            PMA_HOST: db
-            PMA_PORT: 3306
-            PMA_USER: laravel
-            PMA_PASSWORD: secret
-        depends_on:
-            - db
+            PGADMIN_DEFAULT_EMAIL: admin@example.com
+            PGADMIN_DEFAULT_PASSWORD: secret
         networks:
             - laravel
 
 networks:
     laravel:
-
-volumes:
-    dbdata:
