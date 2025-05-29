@@ -1,22 +1,33 @@
-FROM php:8.2-cli
+FROM php:8.2-fpm
 
+# Установка системных зависимостей
 RUN apt-get update && apt-get install -y \
-    zip unzip curl libpng-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    build-essential \
+    libpng-dev \
+    libjpeg-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    curl \
+    libpq-dev \
+    git \
+    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
 # Установка Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
+# Установка рабочего каталога
 WORKDIR /var/www
 
-COPY . /var/www
+# Копирование файлов
+COPY . .
 
-RUN composer install --optimize-autoloader --no-dev
+# Установка зависимостей Laravel
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Генерация ключа — Laravel требует .env
-COPY .env.example .env
-RUN php artisan key:generate
+# Настройка прав
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Laravel listen на 0.0.0.0:8080
-EXPOSE 8080
-CMD php artisan serve --host=0.0.0.0 --port=8080
+# Установка точки входа
+CMD ["php-fpm"]
