@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CursePageDataController extends Controller
 {
     public function show($cursName){
-        $data = CursePageData::where('cursName', $cursName)->first();
+        $data = CursePageData::where('cursName', $cursName);
 
         if ($data && $data->firstImge) {
             $data->image = 'data:image/jpeg;base64,' . base64_encode($data->image);
