@@ -1,0 +1,27 @@
+services:
+    - type: web
+      name: laravel-api
+      env: docker
+      plan: free
+      region: oregon
+      dockerfilePath: ./Dockerfile
+      dockerContext: .
+      envVars:
+          - key: APP_ENV
+            value: production
+          - key: APP_KEY
+            generateValue: true
+          - key: APP_DEBUG
+            value: false
+          - key: DB_CONNECTION
+            value: pgsql
+          - key: DB_HOST
+            value: dpg-d0qpv2buibrs73er4ss0-a.oregon-postgres.render.com
+          - key: DB_PORT
+            value: 5432
+          - key: DB_DATABASE
+            value: ee_bd
+          - key: DB_USERNAME
+            value: ee_bd_user
+          - key: DB_PASSWORD
+            value: C0nxWR4dlUL1CXzwO6HPOTnWO3TVLDVk
