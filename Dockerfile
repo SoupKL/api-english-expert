@@ -17,6 +17,8 @@ RUN composer install --optimize-autoloader --no-dev
 COPY .env.example .env
 RUN php artisan key:generate
 
+RUN docker-php-ext-install pdo_pgsql
+
 # Laravel listen на 0.0.0.0:8080
 EXPOSE 8080
 CMD php artisan serve --host=0.0.0.0 --port=8080
