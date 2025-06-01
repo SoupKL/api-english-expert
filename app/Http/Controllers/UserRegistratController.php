@@ -10,14 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class UserRegistratController extends Controller {
 
-	public function create() {
-
-	}
-	public function store(Request $request) {
+	public function create(Request $request) {
 		$validator = Validator::make($request->all(), [
-			'name' => 'required|string|max:255',
-			'login' => 'required|string|max:255',
-			'email' => 'required|string|email|max:255|unique:users',
+			'name'     => 'required|string|max:255',
+			'login'    => 'required|string|max:255',
+			'email'    => 'required|string|email|max:255|unique:users',
 			'password' => 'required|string|min:8|confirmed',
 		]);
 
@@ -26,24 +23,24 @@ class UserRegistratController extends Controller {
 		}
 
 		$user = User::create([
-			'name' => $request->name,
-			'login' => $request->name,
-			'email' => $request->email,
+			'name'     => $request->name,
+			'login'    => $request->login,
+			'email'    => $request->email,
 			'password' => Hash::make($request->password),
 		]);
 
-        CourseStatus::create([
-            'user_id' => $user->id,
-        ]);
+		CourseStatus::create([
+			'user_id' => $user->id,
+		]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+		$token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'User registered successfully',
-            'user' => $user,
-            'access_token' => $token,
-            'token_type' => 'Bearer'
-        ], 201);
+		return response()->json([
+			'message'      => 'User registered successfully',
+			'user'         => $user,
+			'access_token' => $token,
+			'token_type'   => 'Bearer',
+		], 201);
 	}
 
 }
