@@ -18,17 +18,17 @@ use App\Http\Controllers\UserRegistratController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->get('/user', function(Request $request) {
+	return $request->user();
 });
 
 Route::post('/register', [UserRegistratController::class, 'create']);
-Route::post('/login',[UserLoginController::class, 'login']);
-Route::post('/logout',[UserLoginController::class, 'logout']);
+Route::post('/login', [UserLoginController::class, 'login']);
+Route::post('/logout', [UserLoginController::class, 'logout']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/users/{user}/course-status', [CourseStatusController::class, 'show']);
-    Route::patch('/course-status/{user}', [CourseStatusController::class, 'updateCourse']);
+Route::middleware('auth:sanctum')->group(function() {
+	Route::get('/users/course-status', [CourseStatusController::class, 'show']);
+	Route::put('/course-status', [CourseStatusController::class, 'updateCourse']);
 });
 
 Route::get('/cures-info/{cursName}', [CursePageDataController::class, 'show']);
