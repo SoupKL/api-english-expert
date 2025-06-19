@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseStatus;
+use Illuminate\Http\Request;
 
 class CourseStatusController extends Controller
 {

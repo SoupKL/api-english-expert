@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseStatusController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ParamanentData\CursePageDataController;
 use App\Http\Controllers\UserLoginController;
 use App\Mail\FeedbackUserMail;
@@ -28,11 +29,13 @@ Route::post('/login', [UserLoginController::class, 'login']);
 Route::post('/logout', [UserLoginController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function() {
-	Route::get('/users/course-status', [CourseStatusController::class, 'show']);
-	Route::put('/course-status', [CourseStatusController::class, 'updateCourse']);
+	Route::get('/users/{user}/course-status', [CourseStatusController::class, 'show']);
+	Route::put('/course-status/{user}', [CourseStatusController::class, 'updateCourse']);
 });
 
 Route::get('/cures-info/{cursName}', [CursePageDataController::class, 'show']);
+
+Route::post('/feedback', [FeedbackController::class, 'send']);
 
 Route::post('/feedback', function (Request $request) {
 	$data = $request->validate([
