@@ -17,7 +17,7 @@ class CourseStatusController extends Controller
             'value' => 'required|boolean',
         ]);
 
-        $status = CourseStatus::where('curse_id', $userId)->firstOnFail();
+        $status = CourseStatus::where('$userId', $userId)->firstOrFail();
         $status->{$request->course} = $request->value;
         $status->save();
 
