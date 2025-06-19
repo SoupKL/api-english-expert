@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseStatusController;
 use App\Http\Controllers\ParamanentData\CursePageDataController;
 use App\Http\Controllers\UserLoginController;
+use App\Mail\FeedbackUserMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserRegistratController;
@@ -32,4 +33,18 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/cures-info/{cursName}', [CursePageDataController::class, 'show']);
+
+Route::post('/feedback', function (Request $request) {
+	$data = $request->validate([
+		'name' => 'required|string|max:100',
+		'phone' => 'required|string|max:30',
+		'email' => 'required|email|max:255',
+	]);
+
+	// Отправляем письмо пользователю
+	Mail::to($data['email'])->send(new FeedbackUserMail($data));
+
+	return response()->json(['message' => 'Письмо успешно отправлено!']);
+});
+
 
