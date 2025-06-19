@@ -14,7 +14,7 @@ class CourseStatusController extends Controller
 
     public function updateCourse(Request $request, $userId){
         $request->validate([
-            'curse' => 'required|in:a1,a2,b1,b2,c1,c2',
+            'course' => 'required|in:a1,a2,b1,b2,c1,c2',
             'value' => 'required|boolean',
         ]);
 
