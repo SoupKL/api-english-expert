@@ -31,6 +31,8 @@ Route::post('/logout', [UserLoginController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function() {
 	Route::get('/users/{user}/course-status', [CourseStatusController::class, 'show']);
 	Route::patch('/course-status/{user}', [CourseStatusController::class, 'updateCourse']);
+
+	Route::post('/logout', [UserLoginController::class, 'logout']);
 });
 
 Route::get('/cures-info/{cursName}', [CursePageDataController::class, 'show']);

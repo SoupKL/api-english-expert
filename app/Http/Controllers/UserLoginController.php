@@ -31,12 +31,11 @@ class UserLoginController extends Controller
         return response()->json(['message' => 'Login unsuccessful'], 401);
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+	public function logout(Request $request)
+	{
+		// Удаляем текущий токен доступа пользователя (если авторизован через Sanctum)
+		$request->user()?->currentAccessToken()?->delete();
 
-        return response()->json(['message' => 'Logged out']);
-    }
+		return response()->json(['message' => 'Вы вышли из аккаунта']);
+	}
 }
